@@ -68,3 +68,44 @@ select Education_Level, COUNT(*) as Count_Eductaion_Level,
 from [dbo].[BankChurners (1)]
 group by Education_Level
 order by Count_Eductaion_Level DESC;
+
+
+--  14. What gender is most divorced
+select Gender, COUNT(*) as Count_of_Divorced
+from [dbo].[BankChurners (1)]
+where Marital_Status = 'Divorced'
+group by Gender 
+order by Count_of_Divorced DESC;
+
+--  15. Of all existing customers who has a credit limit above 15,000, what marital status has the most number of dependent
+select Marital_Status, COUNT(Dependent_count) as Count_of_Dependent
+from [dbo].[BankChurners (1)]
+where Credit_Limit > 15000 and Attrition_Flag= 'Existing Customer'
+group by Marital_Status
+order by Count_of_Dependent DESC;
+
+--  16. What is the total revolving balance of customers who are youths (assuming youths are people within the age of 30- 40)
+select SUM(Total_Revolving_Bal) as Youth_Total_Revolving_Bal
+from [dbo].[BankChurners (1)]
+where Customer_Age BETWEEN 30 and 40;
+
+--  17. What education level of customers has the most number of people depending on them.
+select Education_Level, SUM(Dependent_count) as Sum_of_Dependent
+from [dbo].[BankChurners (1)]
+group by Education_Level
+order by Sum_of_Dependent DESC;
+
+--  18. What is the total of credit limit of all existing graduate customers
+select Education_Level, SUM(Credit_Limit) as Total_Credit_Limit
+from [dbo].[BankChurners (1)]
+where Attrition_Flag= 'Existing Customer' and Education_Level = 'Graduate'
+group by Education_Level;
+
+--  19. Of all Attrited Male Married customers, what education level makes the most average total transaction
+--  20. Credit Limit shows the income level of customers. Classify the customers according to their income level (Low Income, Average Income, High Income, and Elite)
+--  21. Is it true that as females get more educated, they are more likely to get divorced ?
+--  24. What is the average credit limit of all Male customers
+select *
+from [dbo].[BankChurners (1)]
+
+--- KEY FINDINGS----
