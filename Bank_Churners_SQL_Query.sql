@@ -102,10 +102,34 @@ where Attrition_Flag= 'Existing Customer' and Education_Level = 'Graduate'
 group by Education_Level;
 
 --  19. Of all Attrited Male Married customers, what education level makes the most average total transaction
---  20. Credit Limit shows the income level of customers. Classify the customers according to their income level (Low Income, Average Income, High Income, and Elite)
---  21. Is it true that as females get more educated, they are more likely to get divorced ?
---  24. What is the average credit limit of all Male customers
-select *
+select  TOP 1 Education_Level, AVG(Total_Trans_Amt) as Average_Trans_Amt
 from [dbo].[BankChurners (1)]
+where Attrition_Flag= 'Attrited Customer' and Gender = 'M'
+group by Education_Level
+Order by Average_Trans_Amt DESC;
 
---- KEY FINDINGS----
+--  20. Credit Limit shows the income level of customers. Classify the customers according to their income level 
+-- (Low Income, Average Income, High Income, and Elite)
+select CLIENTNUM, Credit_Limit,
+    CASE 
+        WHEN Credit_Limit <= 2000 THEN 'Low Income'
+        WHEN Credit_Limit BETWEEN 2001 AND 5000 THEN 'Average Income'
+        WHEN Credit_Limit BETWEEN 5001 AND 10000 THEN 'High Income'
+        WHEN Credit_Limit > 10000 THEN 'Elite'
+        ELSE 'Unknown'
+    END AS Income_Level
+from [dbo].[BankChurners (1)];
+
+--  21. Is it true that as females get more educated, they are more likely to get divorced ?
+SELECT Education_Level, COUNT(*) AS Total_Divorced_Females
+FROM [dbo].[BankChurners (1)]
+WHERE Gender = 'F'
+  AND Marital_Status = 'Divorced'
+GROUP BY Education_Level
+ORDER BY Total_Divorced_Females DESC;
+
+--  24. What is the average credit limit of all Male customers
+select ROUND( AVG(Credit_Limit),1) as Avg_Credit_Limit_Male
+from [dbo].[BankChurners (1)]
+where Gender = 'M';
+
